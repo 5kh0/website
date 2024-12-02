@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing DVD</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay loop>
+        <source src="your-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <canvas id="bouncingLogo"></canvas>
+
+    <script>
+        const canvas = document.getElementById('bouncingLogo');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const logo = new Image();
+        logo.src = 'dvd-logo.png'; // Replace with your image path
+
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let dx = 2; // Horizontal speed
+        let dy = 2; // Vertical speed
+        const logoWidth = 100;
+        const logoHeight = 50;
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(logo, x, y, logoWidth, logoHeight);
+
+            if (x + logoWidth >= canvas.width || x <= 0) dx = -dx;
+            if (y + logoHeight >= canvas.height || y <= 0) dy = -dy;
+
+            x += dx;
+            y += dy;
+
+            requestAnimationFrame(animate);
+        }
+
+        logo.onload = () => {
+            animate();
+        };
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
